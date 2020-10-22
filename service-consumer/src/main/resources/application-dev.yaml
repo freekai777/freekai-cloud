@@ -1,0 +1,25 @@
+server:
+  port:  8083
+
+#spring.cloud.loadbalancer.ribbon.enabled=false # 这个地方影响了改变ribbon的负载均衡策略
+spring:
+  application:
+    name: server-consumer
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: service-consumer
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    service-url:
+      defaultZone: http://freekai:freekaiQaq@${eureka.instance.hostname}:8081/eureka
+    register-with-eureka: true
+
+zuul:
+  routes:
+    service-provider: #自定义一个名称
+      path: /api/**  # 匹配的路由规则
+      serviceId: service-provider # eureka中的服务提供名称， 访问路径后的 api地址要和服务提供者的接口保持一致，
+                                  # 之前一致通过 访问服务消费者中的api地址 http://localhost:8083/api/test/msg 导致一直访问不到
+                                  # 改成 http://localhost:8083/api/hello/msg 这里的hello/{msg} 对应的是service-provider中的api， 前面的api是配置的zuul的路由规则

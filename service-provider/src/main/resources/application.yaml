@@ -1,0 +1,45 @@
+server:
+  port: 8082
+
+
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: service-provider
+    prefer-ip-address: true
+  client:
+    service-url:
+      # 客户端配置了security后，下面配置的链接中要带上用户名密码[用户名：freekai, 密码freekaiQaq],即 defaultZone: http://localhost:8081/eureka --> http://freekai:freekaiQaq@localhost:8081/eureka
+      #defaultZone: http://localhost:8081/eureka
+      defaultZone: http://freekai:freekaiQaq@localhost:8081/eureka
+    fetch-registry: true
+    register-with-eureka: true
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?userCharacterEncoding=utf-8&userSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: service-provider
+
+
+
+  # 方法1，排除Ribbon load-balancer 。因为其处于维护状态，但是 spring-cloud-starter-netflix-eureka-server 和spring-cloud-start-netflix-eureka-client 包含了它
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
+
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+  mapper-locations: classpath:/mapper/*.xml
+  global-config:
+    db-config:
+      # 逻辑删除前后的值
+      logic-not-delete-value: 0
+      logic-delete-value: 1

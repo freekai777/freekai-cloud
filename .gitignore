@@ -1,0 +1,4 @@
+# Project exclude paths
+/freekai-common/target/
+/security-demo-gradle/.gradle/
+/security-demo-gradle/build/

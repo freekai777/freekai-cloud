@@ -1,0 +1,23 @@
+eureka:
+  instance:
+    hostname: localhost
+    instance-id: freekai-eureka-server
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+server:
+  port: 8081
+
+spring:
+  security:
+    user:
+      name: freekai
+      password: freekaiQaq
+
+
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false

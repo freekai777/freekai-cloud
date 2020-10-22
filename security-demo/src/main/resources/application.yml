@@ -1,0 +1,31 @@
+server:
+  port: 8787
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+#    org.springframework.boot.autoconfigure: DEBUG
+
+spring:
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+#          google:
+#            client-id: your-app-client-id
+#            client-secret: your-app-client-secret
+          github:
+            client-id: 158ec3a3996f4e9702bb
+            client-secret: 17fb40edcef4362197912dd5c1c59aab26a780b8
+  application:
+    name: freekai-spring-security-oauth
+#          facebook:
+#            client-id: your-app-client-id
+#            client-secret: your-app-client-secret
+#          okta:
+#            client-id: your-app-client-id
+#            client-secret: your-app-client-secret
