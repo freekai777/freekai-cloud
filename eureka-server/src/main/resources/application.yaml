@@ -21,3 +21,10 @@ spring:
     loadbalancer:
       ribbon:
         enabled: false
+
+
+# 自定义 ... If you  use the starter parent 如果pom.xml中 用了spring-boot-starter-parent，
+#  则 build和 plugin中不需要额外设置， 默认的分割符为@..@
+# 详情见官网 【https://docs.spring.io/spring-boot/docs/2.3.4.RELEASE/reference/htmlsingle/#howto-automatic-expansion-maven】
+self:
+  javaVersion: @java.version@
