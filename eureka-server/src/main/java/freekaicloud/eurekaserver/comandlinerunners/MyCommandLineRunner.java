@@ -30,14 +30,13 @@ public class MyCommandLineRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        final ExecutorService executorService = Executors.newFixedThreadPool(4);
+
         Long startTime = System.currentTimeMillis();
         System.out.println(startTime + "自定义CommandLineRunner 执行 ========" + Arrays.asList(args) + "; java.version:=====" + selfJavaVersion);
 
         // 发布一个事件 [发现还是 同步 的执行]
         MySpringEvent mySpringEvent = new MySpringEvent("name...");
-
-        executorService.execute(()->{context.publishEvent(mySpringEvent);});
+        context.publishEvent(mySpringEvent);
         System.out.println(System.currentTimeMillis()+"自定义CommandLineRunner 结束 ========耗时：" +(System.currentTimeMillis() - startTime));
     }
 }
