@@ -96,6 +96,27 @@ public class RabbitMqConfig {
         connectionFactory.setPassword(configProperties.getPassword());
         connectionFactory.setVirtualHost("/");
         connectionFactory.setPublisherConfirmType(CachingConnectionFactory.ConfirmType.CORRELATED);
+
+        /**
+         * 此处声明的 队列的最后一个参数和 定义的 com.freekai.cloud.config.RabbitMqConfig#queueA() 中，队列的arguments参数不一致，
+         * 会出现如下报错：
+         * /**
+         *          * Caused by: com.rabbitmq.client.ShutdownSignalException: channel error; protocol method:
+         *          * #method<channel.close>(reply-code=406, reply-text=PRECONDITION_FAILED - inequivalent arg 'x-message-ttl' for queue 'queueA' in vhost '/':
+         *          * received the value '60000' of type 'signedint' but current is none, class-id=50, method-id=10)
+         *          * 原因：
+         *          *
+         *  解决方案：
+         *    1.注入rabbitAdmin
+         *    @Autowired
+         *     RabbitAdmin rabbitAdmin;
+         *    2. com.freekai.cloud.config.RabbitMqConfig#createExchangeQueue()
+         *    在方法中声明/创建队列。 这样在springboot启动后， 会自动创建exchange、queue等
+         *
+         */
+        ///   factory.createConnection().createChannel(false).queueDeclare(QUEUE_A, true, false, false, null);
+
+
         return connectionFactory;
     }
 
@@ -120,11 +141,7 @@ public class RabbitMqConfig {
         Map<String, Object> argMap = new HashMap<>();
         argMap.put("x-dead-letter-exchange", DLX_EXCHANGE); // 死信交换机
         argMap.put("x-dead-letter-routing-key", QUEUE_A_ROUTING_KEY); // 死信路由键
-        /**
-         * Caused by: com.rabbitmq.client.ShutdownSignalException: channel error; protocol method:
-         * #method<channel.close>(reply-code=406, reply-text=PRECONDITION_FAILED - inequivalent arg 'x-message-ttl' for queue 'queueA' in vhost '/':
-         * received the value '60000' of type 'signedint' but current is none, class-id=50, method-id=10)
-         */
+
         argMap.put("x-message-ttl",60000); // 消息多少毫秒后过期， 可以理解为消息可以在当前队列待多长时间
         Queue queue = new Queue(QUEUE_A, true, false, false,argMap);
         return queue;
